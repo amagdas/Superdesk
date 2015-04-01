@@ -127,7 +127,7 @@ Feature: User preferences
         """
         Then we get error 400
         """
-        {"_status": "ERR", "_issues": {"validator exception": "Invalid preference: email:bad_name"}}
+        {"_status": "ERR", "_issues": {"user_preferences": {"email:bad_name": "unknown field"}}}
         """
 
     @auth

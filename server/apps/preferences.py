@@ -48,54 +48,160 @@ class PreferencesResource(Resource):
         }
     }
     schema = {
-        _session_preferences_key: {'type': 'dict', 'required': True},
-        _user_preferences_key: {'type': 'dict', 'required': True},
+        _user_preferences_key: {
+            'type': 'dict',
+            'required': True,
+        },
         _privileges_key: {'type': 'dict'},
-        _action_key: {'type': 'list'}
+        _action_key: {'type': 'list'},
+        _session_preferences_key: {
+            'type': 'dict',
+            'required': True
+        },
     }
     resource_methods = []
     item_methods = ['GET', 'PATCH']
 
-    superdesk.register_default_user_preference('feature:preview', {
-        'type': 'bool',
-        'enabled': False,
-        'default': False,
-        'label': 'Enable Feature Preview',
-        'category': 'feature'
-    })
+    superdesk.register_default_user_preference('feature:preview', (
+        {
+            'type': 'bool',
+            'enabled': False,
+            'default': False,
+            'label': 'Enable Feature Preview',
+            'category': 'feature'
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'enabled': {
+                    'type': 'boolean',
+                    'default': False
+                },
+                'type': {'type': 'string', 'default': 'bool', 'readonly': True},
+                'label': {
+                    'type': 'string',
+                    'default': 'Enable Feature Preview',
+                    'readonly': True
+                },
+                'category': {
+                    'type': 'string',
+                    'default': 'feature',
+                    'readonly': True
+                },
+                'default': {'type': 'boolean', 'default': False, 'readonly': True},
+            }
+        }))
 
-    superdesk.register_default_user_preference('archive:view', {
-        'type': 'string',
-        'allowed': ['mgrid', 'compact'],
-        'view': 'mgrid',
-        'default': 'mgrid',
-        'label': 'Users archive view format',
-        'category': 'archive'
-    })
+    superdesk.register_default_user_preference('archive:view', (
+        {
+            'type': 'string',
+            'allowed': ['mgrid', 'compact'],
+            'view': 'mgrid',
+            'default': 'mgrid',
+            'label': 'Users archive view format',
+            'category': 'archive'
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'type': {'type': 'string', 'default': 'string', 'readonly': True},
+                'allowed': {
+                    'type': 'list',
+                    'default': ['mgrid', 'compact'],
+                    'readonly': True
+                },
+                'view': {'type': 'string', 'default': 'mgrid'},
+                'default': {'type': 'string', 'default': 'mgrid', 'readonly': True},
+                'label': {
+                    'type': 'string',
+                    'default': 'Users archive view format',
+                    'readonly': True
+                },
+                'category': {'type': 'string', 'default': 'archive', 'readonly': True},
+            }
+        }))
 
-    superdesk.register_default_user_preference('editor:theme', {
-        'type': 'string',
-        'theme': '',
-        'label': 'Users article edit screen editor theme',
-        'category': 'editor'
-    })
+    superdesk.register_default_user_preference('editor:theme', (
+        {
+            'type': 'string',
+            'theme': '',
+            'label': 'Users article edit screen editor theme',
+            'category': 'editor'
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'type': {'type': 'string', 'default': 'string', 'readonly': True},
+                'theme': {'type': 'string', 'default': ''},
+                'label': {
+                    'type': 'string',
+                    'default': 'Users article edit screen editor theme',
+                    'readonly': True
+                },
+                'category': {'type': 'string', 'default': 'editor', 'readonly': True},
+            }
+        }))
 
-    superdesk.register_default_user_preference('workqueue:items', {
-        'items': []
-    })
+    superdesk.register_default_user_preference('workqueue:items', (
+        {
+            'items': []
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'items': {'type': 'list', 'default': []}
+            }
+        }))
 
-    superdesk.register_default_user_preference('dashboard:ingest', {
-        'providers': []
-    })
+    superdesk.register_default_user_preference('dashboard:ingest', (
+        {
+            'providers': []
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'providers': {'type': 'list', 'default': []}
+            }
+        }))
 
-    superdesk.register_default_session_preference('scratchpad:items', [])
-    superdesk.register_default_session_preference('desk:last_worked', '')
-    superdesk.register_default_session_preference('desk:items', [])
-    superdesk.register_default_session_preference('stage:items', [])
-    superdesk.register_default_session_preference('pinned:items', [])
+    superdesk.register_default_user_preference('email:notification', (
+        {
+            'type': 'bool',
+            'enabled': True,
+            'default': True,
+            'label': 'Send notifications via email',
+            'category': 'notifications'
+        },
+        {
+            'type': 'dict',
+            'schema': {
+                'type': {'type': 'string', 'default': 'bool', 'readonly': True},
+                'default': {'type': 'boolean', 'default': True, 'readonly': True},
+                'enabled': {'type': 'boolean', 'default': True},
+                'label': {
+                    'type': 'string',
+                    'default': 'Send notifications via email',
+                    'readonly': True
+                },
+                'category': {'type': 'string', 'default': 'notifications', 'readonly': True}
+            }
+        }))
+
+    superdesk.register_default_session_preference('scratchpad:items', ([], {'type': 'list', 'default': []}))
+    superdesk.register_default_session_preference('desk:last_worked', ('', {'type': 'string', 'default': ''}))
+    superdesk.register_default_session_preference('desk:items', ([], {'type': 'list', 'default': []}))
+    superdesk.register_default_session_preference('stage:items', ([], {'type': 'list', 'default': []}))
+    superdesk.register_default_session_preference('pinned:items', ([], {'type': 'list', 'default': []}))
 
 
 class PreferencesService(BaseService):
+
+    def load_schema(self):
+        schema = superdesk.app.config['DOMAIN'][self.datasource]['schema']
+        user_prefs = {k: schema for k, (_, schema) in superdesk.default_user_preferences.items()}
+        schema[_user_preferences_key].setdefault('schema', user_prefs)
+        session_prefs = {k: schema for k, (_, schema) in superdesk.default_session_preferences.items()}
+        schema[_session_preferences_key].setdefault('schema', session_prefs)
 
     def on_session_end(self, user_id, session_id):
         service = get_resource_service('users')
@@ -110,12 +216,12 @@ class PreferencesService(BaseService):
         updates = {}
         if _user_preferences_key not in user_doc:
             orig_user_prefs = user_doc.get(_preferences_key, {})
-            available = dict(superdesk.default_user_preferences)
+            available = dict({k: pref for k, (pref, _) in superdesk.default_user_preferences.items()})
             available.update(orig_user_prefs)
             updates[_user_preferences_key] = available
 
         session_prefs = user_doc.get(_session_preferences_key, {})
-        available = dict(superdesk.default_session_preferences)
+        available = dict({k: pref for k, (pref, _) in superdesk.default_session_preferences.items()})
         if available.get('desk:last_worked') == '' and user_doc.get('desk'):
             available['desk:last_worked'] = user_doc.get('desk')
 
@@ -127,11 +233,12 @@ class PreferencesService(BaseService):
     def set_user_initial_prefs(self, user_doc):
         if _user_preferences_key not in user_doc:
             orig_user_prefs = user_doc.get(_preferences_key, {})
-            available = dict(superdesk.default_user_preferences)
+            available = dict({k: pref for k, (pref, schema) in superdesk.default_user_preferences.items()})
             available.update(orig_user_prefs)
             user_doc[_user_preferences_key] = available
 
     def find_one(self, req, **lookup):
+        self.load_schema()
         session = get_resource_service('sessions').find_one(req=None, _id=lookup['_id'])
         _id = session['user'] if session else lookup['_id']
         doc = get_resource_service('users').find_one(req, _id=_id)
@@ -145,15 +252,6 @@ class PreferencesService(BaseService):
         doc[_session_preferences_key] = session_prefs
 
         self.enhance_document_with_user_privileges(doc)
-
-    def on_update(self, updates, original):
-        # Beware, dragons ahead
-        existing_user_preferences = original.get(_user_preferences_key, {}).copy()
-        existing_session_preferences = original.get(_session_preferences_key, {}).copy()
-
-        self.update_user_prefs(updates, existing_user_preferences)
-        session_id = request.view_args['_id']
-        self.update_session_prefs(updates, existing_session_preferences, session_id)
 
     def update_session_prefs(self, updates, existing_session_preferences, session_id):
         session_prefs = updates.get(_session_preferences_key)
@@ -177,6 +275,13 @@ class PreferencesService(BaseService):
             updates[_user_preferences_key] = existing_user_preferences
 
     def update(self, id, updates, original):
+        existing_user_preferences = original.get(_user_preferences_key, {}).copy()
+        existing_session_preferences = original.get(_session_preferences_key, {}).copy()
+
+        self.update_user_prefs(updates, existing_user_preferences)
+        session_id = request.view_args['_id']
+        self.update_session_prefs(updates, existing_session_preferences, session_id)
+
         session = get_resource_service('sessions').find_one(req=None, _id=original['_id'])
         original_unpatched = self.backend.find_one(self.datasource, req=None, _id=session['user'])
         updated = original_unpatched.copy()
@@ -192,12 +297,12 @@ class PreferencesService(BaseService):
 
     def enhance_document_with_default_prefs(self, session_doc, user_doc):
         orig_user_prefs = user_doc.get(_preferences_key, {})
-        available = dict(superdesk.default_user_preferences)
+        available = dict({k: pref for k, (pref, schema) in superdesk.default_user_preferences.items()})
         available.update(orig_user_prefs)
         session_doc[_user_preferences_key] = available
 
         orig_session_prefs = session_doc.get(_session_preferences_key, {})
-        available = dict(superdesk.default_session_preferences)
+        available = dict({k: pref for k, (pref, _) in superdesk.default_session_preferences.items()})
         available.update(orig_session_prefs)
 
         if available.get('desk:last_worked') == '' and user_doc.get('desk'):

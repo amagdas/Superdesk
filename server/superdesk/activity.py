@@ -123,13 +123,6 @@ class ActivityResource(Resource):
     datasource = {
         'default_sort': [('_created', -1)]
     }
-    superdesk.register_default_user_preference('email:notification', {
-        'type': 'bool',
-        'enabled': True,
-        'default': True,
-        'label': 'Send notifications via email',
-        'category': 'notifications'
-    })
 
 
 class ActivityService(BaseService):

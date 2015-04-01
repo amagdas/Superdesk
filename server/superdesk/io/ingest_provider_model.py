@@ -148,6 +148,8 @@ class IngestProviderService(BaseService):
             updates['content_expiry'] = INGEST_EXPIRY_MINUTES
         if 'is_closed' in updates and original.get('is_closed', False) != updates.get('is_closed'):
             self._set_provider_status(updates, updates.get('last_closed', {}).get('message', ''))
+        print('Updating provider: ', updates)
+        print(original)
 
     def on_updated(self, updates, original):
         do_notification = updates.get('notifications', {})\

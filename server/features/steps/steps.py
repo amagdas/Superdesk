@@ -43,6 +43,7 @@ external_url = 'http://thumbs.dreamstime.com/z/digital-nature-10485007.jpg'
 def test_json(context):
     try:
         response_data = json.loads(context.response.get_data())
+        print(response_data)
     except Exception:
         fail_and_print_body(context.response, 'response is not valid json')
     context_data = json.loads(apply_placeholders(context, context.text))
@@ -617,6 +618,12 @@ def step_impl_then_get_nofield(context, field):
     expect_json_not_contains(context.response, field)
 
 
+@then('"{field}" not in "{path}"')
+def step_impl_then_get_nofield_in_path(context, field, path):
+    assert_200(context.response)
+    expect_json_not_contains(context.response, field, path)
+
+
 @then('we get existing resource')
 def step_impl_then_get_existing(context):
     assert_200(context.response)
@@ -1074,7 +1081,8 @@ def then_we_get_notifications(context):
 @then('we get default preferences')
 def get_default_prefs(context):
     response_data = json.loads(context.response.get_data())
-    assert_equal(response_data['user_preferences'], default_user_preferences)
+    available = dict({k: pref for k, (pref, _) in default_user_preferences.items()})
+    assert_equal(response_data['user_preferences'], available)
 
 
 @when('we spike "{item_id}"')
