@@ -43,13 +43,15 @@
     function LegalArchiveController($scope, $location, legal) {
         $scope.meta = {};
         $scope.items = null;
+        $scope.loading = false;
 
         $scope.search = function () {
             console.log($scope.meta);
+            $scope.loading = true;
             legal.query($scope.meta).then(function(items) {
                 console.log(items);
+                $scope.loading = false;
                 $scope.items = items;
-
             });
         };
 
